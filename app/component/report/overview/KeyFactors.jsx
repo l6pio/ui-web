@@ -13,6 +13,7 @@ import {LCell} from "../../common/table/LCell";
 import {ApiClient} from "../../../util/ApiClient";
 import {Label, LocalEvent} from "../../../Const";
 import {connect} from "react-redux";
+import ms from "pretty-ms";
 
 const defaultData = {
     loaded: false,
@@ -28,10 +29,14 @@ const KeyFactors = ({reportJob}) => {
     const reportTestRef = React.useRef(reportJob);
 
     const getData = () => {
-        apiClient.get(`/report/${reportTestRef.current.id}/http/key-factors`).then(res => res.data ?
-            setData({...res.data, loaded: true}) :
-            setData(defaultData)
-        );
+        apiClient.get(`/report/${reportTestRef.current.id}/http/key-factors`).then(res => {
+            if (res.data) {
+                console.log(">>>", res.data);
+                setData({...res.data, loaded: true});
+            } else {
+                setData(defaultData);
+            }
+        });
     };
 
     useEffect(() => {
@@ -86,12 +91,30 @@ const KeyFactors = ({reportJob}) => {
                                                 <LCell bb="0" p="6px 0 0 0" align="right">{data.httpCount}</LCell>
                                             </TableRow>
                                             <TableRow>
-                                                <LCell bb="0" p="6px 0 12px 0" width="150px">
+                                                <LCell bb="0" p="6px 0 0 0" width="150px">
                                                     <Typography variant="subtitle2">{Label.HttpFailure}:</Typography>
                                                 </LCell>
-                                                <LCell bb="0" p="6px 0 12px 0" align="right">
+                                                <LCell bb="0" p="6px 0 0 0" align="right">
                                                     {Math.round(data.httpFailed / data.httpCount * 10000) / 100}%
                                                 </LCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <LCell bb="0" p="6px 0 0 0" width="150px">
+                                                    <Typography variant="subtitle2">{Label.P90}:</Typography>
+                                                </LCell>
+                                                <LCell bb="0" p="6px 0 0 0" align="right">{ms(data.p90)}</LCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <LCell bb="0" p="6px 0 0 0" width="150px">
+                                                    <Typography variant="subtitle2">{Label.P75}:</Typography>
+                                                </LCell>
+                                                <LCell bb="0" p="6px 0 0 0" align="right">{ms(data.p75)}</LCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <LCell bb="0" p="6px 0 12px 0" width="150px">
+                                                    <Typography variant="subtitle2">{Label.P50}:</Typography>
+                                                </LCell>
+                                                <LCell bb="0" p="6px 0 12px 0" align="right">{ms(data.p50)}</LCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
