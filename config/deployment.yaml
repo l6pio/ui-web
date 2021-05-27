@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-web
+  labels:
+    app: ui-web
+spec:
+  selector:
+    matchLabels:
+      app: ui-web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ui-web
+    spec:
+      containers:
+      - name: ui-web
+        image: img:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+        resources:
+          requests:
+            cpu: 0.5
+            memory: 512Mi
+      serviceAccountName: ui-web
+      terminationGracePeriodSeconds: 10
