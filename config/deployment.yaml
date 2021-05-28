@@ -3,17 +3,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-web
-  labels:
-    app: ui-web
 spec:
-  selector:
-    matchLabels:
-      app: ui-web
   replicas: 1
   template:
-    metadata:
-      labels:
-        app: ui-web
     spec:
       containers:
       - name: ui-web

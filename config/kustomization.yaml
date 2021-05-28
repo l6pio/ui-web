@@ -9,8 +9,8 @@ namespace: default
 namePrefix: l6p-
 
 # Labels to add to all resources and selectors.
-#commonLabels:
-#  someName: someValue
+commonLabels:
+  l6p-app: ui-web
 
 resources:
 - deployment.yaml
